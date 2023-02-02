@@ -39,12 +39,8 @@ class GameController(private val hangmanService: HangmanService) {
     @PostMapping("/word/guess")
     @ApiOperation("Guess letter")
     fun guessLetter(@RequestBody guessRequest: GuessRequest): ResponseEntity<Player> {
-        return if (hangmanService.guessLetter(guessRequest.playerName, guessRequest.letter)) {
-            ResponseEntity.ok().body(hangmanService.getPlayerStatistics(guessRequest.playerName))
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                .body(hangmanService.getPlayerStatistics(guessRequest.playerName))
-        }
+        hangmanService.guessLetter(guessRequest.playerName, guessRequest.letter)
+        return ResponseEntity.ok().body(hangmanService.getPlayerStatistics(guessRequest.playerName))
     }
 
     @PostMapping("/newGame")
