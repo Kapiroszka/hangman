@@ -1,5 +1,7 @@
 package com.sggw.hangman
 
+import java.util.*
+
 class HangmanService(
     private val players: MutableMap<String, Player>,
     private var wordProvider: WordProvider,
@@ -32,12 +34,13 @@ class HangmanService(
     }
 
     fun guessLetter(playerName: String, letter: Char): Boolean {
+
         addUserIfNotPresent(playerName)
         if (checkedLetters.contains(letter)) {
             return true
         }
         checkedLetters.add(letter)
-        val occurrencesOfLetterInWord = wordProvider.currentWord.chars().filter { it.toChar() == letter }.count()
+        val occurrencesOfLetterInWord =  wordProvider.currentWord.uppercase(Locale.getDefault()).chars().filter { it.toChar() == letter }.count()
         if (occurrencesOfLetterInWord > 0) {
             correctLetters.add(letter)
             players[playerName]!!.score += occurrencesOfLetterInWord
